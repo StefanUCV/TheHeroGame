@@ -1,0 +1,20 @@
+{
+  "name": "vendor_name/theherogame",
+  "description": "OrderusHero by eMAG",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Stefan Lucian Ciora",
+      "email": "ciora.stefan@yahoo.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "eMAG\\": "assets/"
+    }
+  },
+  "require": {
+    "phpunit/phpunit": "9.*"
+  }
+}
