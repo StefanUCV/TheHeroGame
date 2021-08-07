@@ -10,4 +10,5 @@ The second screenshot shows the fight between Orderus and his opponent.
 ![alt text](testInfo2.png)
 
 
- # To run this game, you need to go into runningGame folder and run testingGame.php (TheHeroGame/runningGame/testingGame.php)
+To run this game, you need to go into runningGame folder and run testingGame.php 
+# (TheHeroGame/runningGame/testingGame.php)
