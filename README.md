@@ -11,4 +11,4 @@ The second screenshot shows the fight between Orderus and his opponent.
 
 
 To run this game, you need to go into runningGame folder and run testingGame.php 
-# (TheHeroGame/runningGame/testingGame.php)
+# run TheHeroGame/runningGame/testingGame.php
