@@ -38,17 +38,17 @@ class Player
         return $this->name;
     }
 
-    public function getStat($key)
+    public function getInfo($key)
     {
         return $this->stats[$key];
     }
 
-    public function setStat($key, $value)
+    public function setInfo($key, $value)
     {
         $this->stats[$key] = $value;
     }
 
-    public function getAllStats()
+    public function setAllInfo()
     {
         return $this->stats;
     }
