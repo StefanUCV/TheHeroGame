@@ -19,22 +19,22 @@ class LetsFight {
         $this->console = new Settings();
         $this->attacker = $hero;
         $this->defender = $beast;
-        $this->setPositions();
+        $this->whoStrikesFirst();
     }
 
-    private function setPositions()
+    private function whoStrikesFirst()
     {
         $attacker = $this->attacker;
         $defender = $this->defender;
 
-        if ($this->defender->getStat('speed') > $this->attacker->getStat('speed')):
+        if ($this->defender->getInfo('speed') > $this->attacker->getInfo('speed')):
             $this->attacker = $defender;
             $this->defender = $attacker;
         endif;
 
-        if ($this->defender->getStat('speed') == $this->attacker->getStat('speed'))
+        if ($this->defender->getInfo('speed') == $this->attacker->getInfo('speed'))
         {
-            if ($this->defender->getStat('luck') > $this->attacker->getStat('luck')):
+            if ($this->defender->getInfo('luck') > $this->attacker->getInfo('luck')):
                 $this->attacker = $defender;
                 $this->defender = $attacker;
             endif;
@@ -50,11 +50,11 @@ class LetsFight {
         }
 
 
-        echo 'Health: ' .$this->attacker->getStat('health'). PHP_EOL;
-        echo 'Strength: ' .$this->attacker->getStat('strength'). PHP_EOL;
-        echo 'Defence: ' .$this->attacker->getStat('defence'). PHP_EOL;
-        echo 'Speed: ' .$this->attacker->getStat('speed'). PHP_EOL;
-        echo 'Luck: ' .$this->attacker->getStat('luck'). PHP_EOL;
+        echo 'Health: ' .$this->attacker->getInfo('health'). PHP_EOL;
+        echo 'Strength: ' .$this->attacker->getInfo('strength'). PHP_EOL;
+        echo 'Defence: ' .$this->attacker->getInfo('defence'). PHP_EOL;
+        echo 'Speed: ' .$this->attacker->getInfo('speed'). PHP_EOL;
+        echo 'Luck: ' .$this->attacker->getInfo('luck'). PHP_EOL;
 
         if ($this->defender->name =="Orderus"){
             echo $this->console->orderusWon($this->defender->name. ' has the following stats: ') . PHP_EOL;
@@ -63,23 +63,23 @@ class LetsFight {
         }
 
 
-        echo 'Health: ' .$this->defender->getStat('health'). PHP_EOL;
-        echo 'Strength: ' .$this->defender->getStat('strength'). PHP_EOL;
-        echo 'Defence: ' .$this->defender->getStat('defence'). PHP_EOL;
-        echo 'Speed: ' .$this->defender->getStat('speed'). PHP_EOL;
-        echo 'Luck: ' .$this->defender->getStat('luck'). PHP_EOL;
+        echo 'Health: ' .$this->defender->getInfo('health'). PHP_EOL;
+        echo 'Strength: ' .$this->defender->getInfo('strength'). PHP_EOL;
+        echo 'Defence: ' .$this->defender->getInfo('defence'). PHP_EOL;
+        echo 'Speed: ' .$this->defender->getInfo('speed'). PHP_EOL;
+        echo 'Luck: ' .$this->defender->getInfo('luck'). PHP_EOL;
 
         echo '' . PHP_EOL;
 
         echo 'Let the battle begin between ' . $this->attacker->name . ' and ' . $this->defender->name . '.' . PHP_EOL;
         echo $this->attacker->name . ' attacks ' . $this->defender->name . ' first!' . PHP_EOL;
-        $this->simulate();
+        $this->simulateBattle();
     }
 
-    private function simulate()
+    private function simulateBattle()
     {
         $turns = 1;
-        while ($this->defender->getStat('health') > 0 && $turns <= $this->totalTurns)
+        while ($this->defender->getInfo('health') > 0 && $turns <= $this->totalTurns)
         {
             echo $this->console->turns('# Turn ' . $turns . ' - ' . $this->attacker->name . ' attacks! #') . PHP_EOL;
 
@@ -115,15 +115,15 @@ class LetsFight {
                         switch ($attackSkill['key'])
                         {
                             case "rapid_strike":
-                                $this->logAttack();
-                                $this->meleeAttack();
+                                $this->aboutAttack();
+                                $this->newHealth();
                                 break;
                         }
                     endif;
                 endif;
 
-                $this->logAttack();
-                $this->meleeAttack();
+                $this->aboutAttack();
+                $this->newHealth();
             }
 
             $this->attacker = $defender;
@@ -137,19 +137,19 @@ class LetsFight {
         if ($this->checkWinner()->name != "Orderus"){
             echo $this->console->orderusLost($this->checkWinner()->name . ' wins the battle. So bad :(!') . PHP_EOL;
         }else{
-        echo $this->console->orderusWon($this->checkWinner()->name . ' wins the battle. HOORAY!') . PHP_EOL;
+        echo $this->console->orderusWon($this->checkWinner()->name . ' wins the battle. I`m so strong, you can`t beat me!') . PHP_EOL;
         }
     }
 
     private function checkWinner()
     {
-        $winner = ($this->defender->getStat('health') > $this->attacker->getStat('health')) ? $this->defender : $this->attacker;
+        $winner = ($this->defender->getInfo('health') > $this->attacker->getInfo('health')) ? $this->defender : $this->attacker;
 
-        if ($this->attacker->getStat('health') <= 0):
+        if ($this->attacker->getInfo('health') <= 0):
             $winner = $this->defender;
         endif;
 
-        if ($this->defender->getStat('health') <= 0):
+        if ($this->defender->getInfo('health') <= 0):
             $winner = $this->attacker;
         endif;
 
@@ -158,25 +158,25 @@ class LetsFight {
         return $this->winner;
     }
 
-    private function meleeAttack()
+    private function newHealth()
     {
-        $newHealth = $this->defender->getStat('health') - $this->damage;
-        $this->defender->setStat('health',$newHealth);
+        $newHealth = $this->defender->getInfo('health') - $this->damage;
+        $this->defender->setInfo('health',$newHealth);
     }
 
     private function damageAmount()
     {
-        $this->damage = $this->attacker->getStat('strength') - $this->defender->getStat('defence');
+        $this->damage = $this->attacker->getInfo('strength') - $this->defender->getInfo('defence');
     }
 
-    private function logAttack()
+    private function aboutAttack()
     {
         echo $this->attacker->name . '(' . $this->attacker->stats['health'] . ' health)) damaged ' . $this->defender->name . '(' . $this->defender->stats['health'] . ' health) with ' . $this->damage . ' damage.' . PHP_EOL;
     }
 
     private function checkHealth()
     {
-        if ($this->attacker->getStat('health') <= 0 || $this->defender->getStat('health') <= 0) return true;
+        if ($this->attacker->getInfo('health') <= 0 || $this->defender->getInfo('health') <= 0) return true;
     }
 
 
